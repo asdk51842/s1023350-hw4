@@ -1,0 +1,107 @@
+IA-32 & IA-64 architecture
+===================
+
+
+
+
+IA-32
+-----
+
+IA-32 是 Intel Architecture 32-bit 的簡稱，第三代的x86結構，intel在1985所推出的32bit指令集結構,而首次使用在intel的80386處理器中,使用32位元系統 ,將pc 由16bit的時代進入32bit的時代
+
+IA-64
+-----
+IA-97 是 Intel Architecture 64-bit 的簡稱，使用在Itanium處理器家族上的64位元指令集架構，IA-64架構是EPIC（Explicitly Parallel Instruction Computing）的64位架構。EPIC是基於超長指令字VLIW（Very Long Instruction Word）的設計，通過將多條指令放入一個指令字，有效的提高了CPU各個計算功能部件的利用效率，提高了程序的性能。
+
+
+1 Modes
+-------------
+
+IA-32處理器就三種 operating modes:
+1 Real-address mode
+It can also be called "unprotected" mode since operating system (such as DOS) code runs in the same mode as the user applications
+
+2 Protected mode
+這是最常用的模式，他允許使用虛擬內存記憶體 和支援多工程式環境
+
+3 System management mode
+這個 mode 是為了快速的 snapshot 而設計的，有效管理power management
+
+
+2 Register Set
+-------------
+他有三種 registers 種類，分別是general-purpose data registers, segment registers, 和 status and control registers
+
+
+
+**2.1 General-purpose Registers**
+
+有八個32bit 的General-purpose Registers 用來儲存一些邏輯，一些計算的算法，memory pointers和address calculations。
+
+![enter image description here](http://flint.cs.yale.edu/cs422/doc/Image8.gif)
+
+EAX—Accumulator for operands and results data.
+EBX—Pointer to data in the DS segment.
+ECX—Counter for string and loop operations.
+EDX—I/O pointer.
+ESI—Pointer to data in the segment pointed to by the DS register; source pointer for string operations.
+EDI—Pointer to data (or destination) in the segment pointed to by the ES register; destination pointer for string operations.
+EBP—Pointer to data on the stack (in the SS segment).
+ESP—Stack pointer (in the SS segment).
+The following figure shows the lower 16 bits of the general-purpose registers can be used with the names AX, BX, CX, DX, BP, SP, SI, and DI (the names for the corresponding 32-bit ones have a prefix "E" for "extended"). Each of the lower two bytes of the EAX, EBX, ECX, and EDX registers can be referenced by the names AH, BH, CH, and DH (high bytes) and AL, BL, CL, and DL (low bytes).
+
+
+**2.2 segment registers**
+
+
+分段暫存器是存放 segment selector 的
+總有六個16bit  segment registers 分別為CS、DS、ES、FS、GS、和 SS。它們的用途和在實際模式中類似（例如，CS 指向程式碼的 segment，而 SS 指向堆疊的 segment）。Segment selector 由三個欄位組成：索引、Table Indicator（TI）、和 Requested Privilege Level（RPL）。索引是 segment 在 GDT（或 LDT）中的位置，而 TI 表示所要使用的 descriptor table（GDT 或 LDT），而 RPL 則是該 selector 的特權等級。
+![enter image description here](http://www.csie.ntu.edu.tw/~wcchen/asm98/asm/proj/b85506061/chap2/selector.GIF)
+
+
+**2.3 control registers**
+
+CPU架構中共有CR0，CR1，CR2，CR3，CR4，CR8共6個控制寄存器
+
+![enter image description here](http://ilinuxkernel.com/wp-content/uploads/2011/06/062111_1434_x86x8664CPU1.png)
+
+CR0：包含當前處理器運行的控制標誌。
+
+CR1：保留。
+
+CR2：包含發生頁面錯誤時的線性地址。
+
+CR3：頁面目錄表（頁目錄表）的物理地址。
+
+CR4：包含處理器擴展功能的標誌位。
+
+CR8：提供對任務優先級寄存器（任務優先級寄存器）的讀寫（僅在64位模式下存在）。
+
+
+3 Addressing
+-------------
+
+
+**Bit and Byte Order**
+
+IA32 處理器使用little endian作為他們處存方法
+對於單一的位元組（a byte），大部分處理器以相同的順序處理位元（bit），因此單位元組的存放方法和傳輸方式一般相同。對於多位元組數據，如整數（32位機中一般占4位元組），在不同的處理器的存放方式主要有兩種，以內存中0x0A0B0C0D的存放方式為例
+
+![enter image description here](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Little-Endian.svg/2000px-Little-Endian.svg.png)
+
+
+**Data Types**
+
+IA32 支援: a byte (8 bits), a word (16 bits), a double-word (32 bits), and a quad-word (64 bits). 
+
+
+
+4Processor Reset
+-------------
+
+重新啟動可以清除cpu,而在運行中當CTRL-ALT-DEL 同時按，鍵盤的  BIOS 會發出一個特定的flag 去把cpu reset。
+
+
+p
+q
+
